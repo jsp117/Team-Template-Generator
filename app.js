@@ -51,6 +51,8 @@ inquirer
         },
     ]).then(function (data) {
         console.log(data);
+        let manager = new Manager(data.name, data.id, data.email, data.office);
+        console.log(manager);
     });
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
