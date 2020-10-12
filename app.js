@@ -10,6 +10,9 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+var engineerCount = 0;
+var internCount = 0;
+
 const questions = {
     q1: "What is your managers name?",
     q2: "What is your managers ID?",
@@ -26,34 +29,136 @@ const questions = {
     q13: "What is your interns school?",
 };
 
-inquirer
-    .prompt([
-        {
-            type: "input",
-            message: questions.q1,
-            name: "name"
 
-        },
-        {
-            type: "input",
-            message: questions.q2,
-            name: "id"
-        },
-        {
-            type: "input",
-            message: questions.q3,
-            name: "email"
-        },
-        {
-            type: "input",
-            message: questions.q4,
-            name: "office"
-        },
-    ]).then(function (data) {
-        console.log(data);
-        let manager = new Manager(data.name, data.id, data.email, data.office);
-        console.log(manager);
-    });
+function managerPrompt() {
+
+
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: questions.q1,
+                name: "name"
+
+            },
+            {
+                type: "input",
+                message: questions.q2,
+                name: "id"
+            },
+            {
+                type: "input",
+                message: questions.q3,
+                name: "email"
+            },
+            {
+                type: "input",
+                message: questions.q4,
+                name: "office"
+            },
+            {
+                type: "list",
+                message: "Would you like to add another team member?",
+                name: "team",
+                choices: ["Engineer", "Intern", "Done"]
+            },
+
+        ]).then(function (data) {
+            console.log(data);
+            let manager = new Manager(data.name, data.id, data.email, data.office);
+            if (data.team === "Engineer") {
+                engineerPrompt();
+            } else if (data.team === "Intern") {
+                internPrompt();
+            }
+            console.log("Team: ", (data.team).toLowerCase());
+            // function(toLowerCase(data.team))
+
+            console.log(manager);
+        });
+}
+function engineerPrompt() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: questions.q6,
+                name: "name"
+
+            },
+            {
+                type: "input",
+                message: questions.q7,
+                name: "id"
+            },
+            {
+                type: "input",
+                message: questions.q8,
+                name: "email"
+            },
+            {
+                type: "input",
+                message: questions.q9,
+                name: "office"
+            },
+            {
+                type: "list",
+                message: "Would you like to add another team member?",
+                name: "team",
+                choices: ["Engineer", "Intern", "Done"]
+            },
+        ]).then(function (data) {
+            let engineer = new Engineer(data.name, data.id, data.email, data.github);
+            if (data.team === "Engineer") {
+                engineerPrompt();
+            } else if (data.team === "Intern") {
+                internPrompt();
+            }
+        });
+
+}
+
+function internPrompt() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: questions.q10,
+                name: "name"
+
+            },
+            {
+                type: "input",
+                message: questions.q11,
+                name: "id"
+            },
+            {
+                type: "input",
+                message: questions.q12,
+                name: "email"
+            },
+            {
+                type: "input",
+                message: questions.q13,
+                name: "school"
+            },
+            {
+                type: "list",
+                message: "Would you like to add another team member?",
+                name: "team",
+                choices: ["Engineer", "Intern", "Done"]
+            },
+        ]).then(function (data) {
+            let intern = new Intern(data.name, data.id, data.email, data.school);
+            if (data.team === "Engineer") {
+                engineerPrompt();
+            } else if (data.team === "Intern") {
+                internPrompt();
+            }
+        });
+}
+
+managerPrompt();
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
