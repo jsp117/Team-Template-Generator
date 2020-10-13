@@ -12,19 +12,19 @@ const employees = [];
 
 
 const questions = {
-    q1: "What is your managers name? ",
-    q2: "What is your managers ID? ",
+    q1: "What is your managers name? (Letters Only) ",
+    q2: "What is your managers ID? (Numbers Only) ",
     q3: "What is your managers Email?",
-    q4: "What is your managers office number? ",
+    q4: "What is your managers office number? (Numbers Only) ",
     q5: "Which type of team member would you like to add?",
-    q6: "What is your engineers name? ",
-    q7: "What is your engineers ID? ",
+    q6: "What is your engineers name? (Letters Only) ",
+    q7: "What is your engineers ID? (Numbers Only) ",
     q8: "What is your engineers Email?",
     q9: "What is your engineers github username?",
-    q10: "What is your interns name? ",
-    q11: "What is your interns ID? ",
+    q10: "What is your interns name? (Letters Only) ",
+    q11: "What is your interns ID? (Numbers Only) ",
     q12: "What is your interns email?",
-    q13: "What is your interns school? ",
+    q13: "What is your interns school? (Letters Only) ",
 };
 
 const checkLetters = async (input) => {
@@ -181,6 +181,7 @@ function internPrompt() {
 
 // renders html page with array of employees
 function create() {
+    // console.log(employees);
     let final = render(employees);
     // if output directory does not exist, create it, then write file team.html
     if (!fs.existsSync(OUTPUT_DIR)) {
