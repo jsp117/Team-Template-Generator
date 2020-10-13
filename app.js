@@ -4,44 +4,40 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
-
 const render = require("./lib/htmlRenderer");
 const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
 const employees = [];
 
 
 const questions = {
-    q1: "What is your managers name? Letters only: ",
-    q2: "What is your managers ID? Numbers only: ",
+    q1: "What is your managers name? ",
+    q2: "What is your managers ID? ",
     q3: "What is your managers Email?",
-    q4: "What is your managers office number? Numbers only: ",
+    q4: "What is your managers office number? ",
     q5: "Which type of team member would you like to add?",
-    q6: "What is your engineers name? Letters only: ",
-    q7: "What is your engineers ID? Numbers only: ",
+    q6: "What is your engineers name? ",
+    q7: "What is your engineers ID? ",
     q8: "What is your engineers Email?",
     q9: "What is your engineers github username?",
-    q10: "What is your interns name? Letters only: ",
-    q11: "What is your interns ID? Numbers only: ",
+    q10: "What is your interns name? ",
+    q11: "What is your interns ID? ",
     q12: "What is your interns email?",
-    q13: "What is your interns school? Letters only: ",
+    q13: "What is your interns school? ",
 };
 
 const checkLetters = async (input) => {
     // returns true if input only contains letters and spaces
-    return /^[A-Za-z ]+$/.test(input); 
+    return /^[A-Za-z ]+$/.test(input);
 };
 
-const checkNum = async(input)=>{
+const checkNum = async (input) => {
     // returns true if input only contains numbers
     return /^[0-9]+$/.test(input);
 };
 
 function managerPrompt() {
-
-
     inquirer
         .prompt([
             {
@@ -183,12 +179,12 @@ function internPrompt() {
         });
 }
 
+// renders html page with array of employees
 function create() {
     let final = render(employees);
-    // console.log(final);
-
+    // if output directory does not exist, create it, then write file team.html
     if (!fs.existsSync(OUTPUT_DIR)) {
-        fs.mkdirSync(OUTPUT_DIR)
+        fs.mkdirSync(OUTPUT_DIR);
     }
     fs.writeFileSync(outputPath, final, "utf-8");
 }
