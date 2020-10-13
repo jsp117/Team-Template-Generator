@@ -1,7 +1,7 @@
 # Team Template Generator
 
 ## Description
-This application is an HTML generator that takes user input and creates a styled HTML file. The main pieces of this application are multiple JS files containing class constructors. The application grabs user input using Inquirer, and error checks to make sure the user inputs the correct character type for a given question.  Each time a set of four questions is answered, those responses are saved to the class matching their job description(eg. Manager, Engineer, Intern). That class is then pushed into an array of employees, and this cycle continues until the user selects "done". At this point, the create function is called which calls the render function that assigns all saved employees to an appropriate place in a pre-made HTML template. There is then an if statement that checks if the output directory exists, and creates it if it does not. The modified template is then written to the team.html file in the output folder. 
+This application is an HTML generator that takes user input and creates a styled HTML file. The main pieces of this application are multiple JS files containing classes. The application grabs user input using Inquirer, and error checks to make sure the user inputs the correct character type for a given question.  Each time a set of four questions is answered, those responses are saved to the class matching their job type(eg. Manager, Engineer, Intern) and they are asked if they would like to add additional team members. That class is then pushed into an array of employees, and this cycle continues until the user selects "done". At this point, the create function is called which calls the render function that assigns all saved employees to an appropriate place in a pre-made HTML template. There is then an if statement that checks if the output directory exists, and creates it if it does not. The modified template is then written to the team.html file in the output folder. 
   
 ## Table of Contents
 * [Description](#description)
@@ -18,7 +18,7 @@ This application is an HTML generator that takes user input and creates a styled
 To install all dependencies, run Npm install in your terminal while opened to the file path you downloaded to. 
 
 ## Usage
-To run this application, open your terminal to the folder it is located in and type "npm install". When those files are finished downloading type "node index.js" to run the application. Follow the series of prompts to the best of your ability, and the application will generate an html file containing all inputted information.
+To run this application, open your terminal to the folder it is located in and type "npm install". When those files are finished downloading type "node index.js" to run the application. Follow the series of prompts to the best of your ability, and the application will generate an html file containing all inputted information. When you would like to stop adding team members, select "done". For the name and school prompts, you may only enter letters of the alphabet as well as spaces. For the ID and office number prompts, you may only enter numbers. 
 
 [Video Walkthrough](https://drive.google.com/file/d/1g34jK60nmXiR4M5VT_EARLdB1SVrTA7u/view)
 
@@ -27,7 +27,7 @@ This code snippet contains the JavaScript used to test user input for correct ch
 
 ![Validate characters](./assets/validator.png)
 
-This code snippet contains the constructor for the Employee class. This class was used as a base for all possible team choices. For manager, intern, and engineer I pulled the name, id, and email from this class and added on additional methods based on their unique attributes. 
+This code snippet contains the constructor for the Employee class. This is the parent class for all other team classes. For manager, intern, and engineer I pulled the name, id, and email from this class and added on additional properties and methods based on their unique attributes. 
 
 ![Employee Constructor](./assets/employee.png)
 
