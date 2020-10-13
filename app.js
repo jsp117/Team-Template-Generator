@@ -9,26 +9,35 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
+const employees = [];
 
-var engineerCount = 0;
-var internCount = 0;
 
 const questions = {
-    q1: "What is your managers name?",
-    q2: "What is your managers ID?",
+    q1: "What is your managers name? Letters only: ",
+    q2: "What is your managers ID? Numbers only: ",
     q3: "What is your managers Email?",
-    q4: "What is your managers office number?",
+    q4: "What is your managers office number? Numbers only: ",
     q5: "Which type of team member would you like to add?",
-    q6: "What is your engineers name?",
-    q7: "What is your engineers ID?",
+    q6: "What is your engineers name? Letters only: ",
+    q7: "What is your engineers ID? Numbers only: ",
     q8: "What is your engineers Email?",
     q9: "What is your engineers github username?",
-    q10: "What is your interns name?",
-    q11: "What is your interns ID?",
+    q10: "What is your interns name? Letters only: ",
+    q11: "What is your interns ID? Numbers only: ",
     q12: "What is your interns email?",
-    q13: "What is your interns school?",
+    q13: "What is your interns school? Letters only: ",
 };
 
+const checkLetters = async (input) => {
+    // returns true if input only contains letters and spaces
+    return /^[A-Za-z ]+$/.test(input); 
+};
+
+const checkNum = async(input)=>{
+    // returns true if input only contains numbers
+    return /^[0-9]+$/.test(input);
+};
 
 function managerPrompt() {
 
@@ -38,13 +47,15 @@ function managerPrompt() {
             {
                 type: "input",
                 message: questions.q1,
-                name: "name"
+                name: "name",
+                validate: checkLetters
 
             },
             {
                 type: "input",
                 message: questions.q2,
-                name: "id"
+                name: "id",
+                validate: checkNum
             },
             {
                 type: "input",
@@ -54,7 +65,8 @@ function managerPrompt() {
             {
                 type: "input",
                 message: questions.q4,
-                name: "office"
+                name: "office",
+                validate: checkNum
             },
             {
                 type: "list",
@@ -64,17 +76,18 @@ function managerPrompt() {
             },
 
         ]).then(function (data) {
-            console.log(data);
+            // console.log(data);
             let manager = new Manager(data.name, data.id, data.email, data.office);
+            employees.push(manager);
             if (data.team === "Engineer") {
                 engineerPrompt();
             } else if (data.team === "Intern") {
                 internPrompt();
+            } else {
+                create();
             }
-            console.log("Team: ", (data.team).toLowerCase());
-            // function(toLowerCase(data.team))
 
-            console.log(manager);
+            // console.log(manager);
         });
 }
 function engineerPrompt() {
@@ -83,13 +96,15 @@ function engineerPrompt() {
             {
                 type: "input",
                 message: questions.q6,
-                name: "name"
+                name: "name",
+                validate: checkLetters
 
             },
             {
                 type: "input",
                 message: questions.q7,
-                name: "id"
+                name: "id",
+                validate: checkNum
             },
             {
                 type: "input",
@@ -99,7 +114,7 @@ function engineerPrompt() {
             {
                 type: "input",
                 message: questions.q9,
-                name: "office"
+                name: "github",
             },
             {
                 type: "list",
@@ -109,10 +124,13 @@ function engineerPrompt() {
             },
         ]).then(function (data) {
             let engineer = new Engineer(data.name, data.id, data.email, data.github);
+            employees.push(engineer);
             if (data.team === "Engineer") {
                 engineerPrompt();
             } else if (data.team === "Intern") {
                 internPrompt();
+            } else {
+                create();
             }
         });
 
@@ -124,13 +142,15 @@ function internPrompt() {
             {
                 type: "input",
                 message: questions.q10,
-                name: "name"
+                name: "name",
+                validate: checkLetters
 
             },
             {
                 type: "input",
                 message: questions.q11,
-                name: "id"
+                name: "id",
+                validate: checkNum
             },
             {
                 type: "input",
@@ -140,7 +160,8 @@ function internPrompt() {
             {
                 type: "input",
                 message: questions.q13,
-                name: "school"
+                name: "school",
+                validate: checkLetters
             },
             {
                 type: "list",
@@ -148,17 +169,32 @@ function internPrompt() {
                 name: "team",
                 choices: ["Engineer", "Intern", "Done"]
             },
+
         ]).then(function (data) {
             let intern = new Intern(data.name, data.id, data.email, data.school);
+            employees.push(intern);
             if (data.team === "Engineer") {
                 engineerPrompt();
             } else if (data.team === "Intern") {
                 internPrompt();
+            } else {
+                create();
             }
         });
 }
 
+function create() {
+    let final = render(employees);
+    // console.log(final);
+
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath, final, "utf-8");
+}
+
 managerPrompt();
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
